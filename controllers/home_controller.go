@@ -1,7 +1,10 @@
 package controllers
 
 import (
+	"encoding/json"
+	"github.com/astaxie/beego/logs"
 	"im-chat-server/models"
+	"io/ioutil"
 	"net/http"
 )
 
@@ -19,6 +22,13 @@ func NewHomeController() *HomeController {
 }
 
 func (c *HomeController) callback(w http.ResponseWriter, r *http.Request) {
-
-	c.OK(w, models.Message{})
+	var message models.Message
+	defer r.Body.Close()
+	if byteData, err := ioutil.ReadAll(r.Body); err == nil {
+		json.Unmarshal(byteData, &message)
+		logs.Info("收到消息:", message)
+	} else {
+		logs.Error(err.Error())
+	}
+	c.OK(w, message)
 }

@@ -21,8 +21,8 @@ const (
 
 type Message struct {
 	CallbackCommand string
-	From_Account    string
-	To_Account      string
+	FromAccount     string `From_Account`
+	ToAccount       string `To_Account`
 	MsgSeq          int
 	MsgTime         int64
 	MsgBody         []MsgBody
